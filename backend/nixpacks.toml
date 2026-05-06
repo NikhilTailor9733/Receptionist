@@ -29,4 +29,4 @@ nixPkgs = [
 ]
 
 [start]
-cmd = "cd backend && npm start"
+cmd = "npm start"
