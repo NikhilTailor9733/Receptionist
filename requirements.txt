@@ -3,5 +3,5 @@ flask-cors
 opencv-python-headless
 numpy
 deepface
-tensorflow
 tf-keras
+tensorflow-cpu
