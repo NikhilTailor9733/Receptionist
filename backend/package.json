@@ -2,8 +2,8 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-  "start": "concurrently \"node server.js\" \"cmd /c ..\\python_backend\\venv\\Scripts\\python.exe ..\\python_backend\\app.py\"",
+  "scripts":
+   {"start": "concurrently \"node server.js\" \"python3 ../python_backend/app.py\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

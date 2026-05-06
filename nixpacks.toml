@@ -4,7 +4,20 @@ nixPkgs = [
   "python311",
   "python311Packages.pip",
   "gcc",
-  "ffmpeg"
+  "ffmpeg",
+  "glib",
+  "nss",
+  "nspr",
+  "atk",
+  "atk-bridge",
+  "cups",
+  "drm",
+  "dbus",
+  "xcbutilwm",
+  "libxkbcommon",
+  "pango",
+  "cairo",
+  "gtk3"
 ]
 
 [start]
