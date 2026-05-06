@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = [
+  "nodejs",
+  "python311",
+  "python311Packages.pip",
+  "gcc",
+  "ffmpeg"
+]
+
+[start]
+cmd = "cd backend && npm start"

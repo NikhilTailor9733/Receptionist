@@ -15,10 +15,10 @@ from collections import Counter
 try:
     from deepface import DeepFace
     DEEPFACE_AVAILABLE = True
-    print("✅ DeepFace loaded")
+    print("DeepFace loaded")
 except Exception as e:
     DEEPFACE_AVAILABLE = False
-    print("❌ DeepFace not available:", e)
+    print(" DeepFace not available:", e)
 
 app = Flask(__name__)
 CORS(app)
@@ -40,7 +40,7 @@ for cf in cascade_files:
     path = cv2.data.haarcascades + cf
     if os.path.exists(path):
         cascades.append(cv2.CascadeClassifier(path))
-print(f"✅ {len(cascades)} cascade detectors loaded")
+print(f" {len(cascades)} cascade detectors loaded")
 
 # ============================================================
 #  DATABASE
@@ -53,7 +53,7 @@ def load_database():
     known_embeddings, known_names = [], []
     if not DEEPFACE_AVAILABLE:
         return
-    print("📂 Loading face DB...")
+    print(" Loading face DB...")
     for person in sorted(os.listdir(DB_PATH)):
         ppath = os.path.join(DB_PATH, person)
         if not os.path.isdir(ppath):
@@ -74,10 +74,10 @@ def load_database():
                     known_names.append(person)
                     loaded += 1
             except Exception as e:
-                print(f"  ❌ {img_name}: {e}")
+                print(f"   {img_name}: {e}")
         if loaded:
-            print(f"  ✅ {person}: {loaded} images")
-    print(f"🔥 DB: {len(known_embeddings)} embeddings, {len(set(known_names))} people")
+            print(f"   {person}: {loaded} images")
+    print(f" DB: {len(known_embeddings)} embeddings, {len(set(known_names))} people")
 
 load_database()
 
@@ -108,11 +108,11 @@ def detect_face(img):
                 crop = img[y1:y2, x1:x2]
                 if crop.size > 0:
                     cv2.imwrite(str(FACE_PATH), crop)
-                    print(f"✅ Face: {x2-x1}x{y2-y1} (sf={sf})")
+                    print(f" Face: {x2-x1}x{y2-y1} (sf={sf})")
                     return str(FACE_PATH)
 
     # Fallback: full image to DeepFace
-    print("⚠️ Cascade failed — using full image")
+    print(" Cascade failed — using full image")
     cv2.imwrite(str(FACE_PATH), img)
     return str(FACE_PATH)
 
@@ -159,13 +159,13 @@ def recognize(img_path):
         # Thresholds
         matched = [(n,l2,cos) for n,l2,cos in scores if l2 < 25.0 and cos > 0.65]
         if not matched:
-            print(f"❌ No match. Best: {scores[0][0]} L2={scores[0][1]:.2f}")
+            print(f" No match. Best: {scores[0][0]} L2={scores[0][1]:.2f}")
             return "unknown", 0
 
         vote   = Counter(m[0] for m in matched)
         winner = vote.most_common(1)[0][0]
         bcos   = max(cos for n,_,cos in matched if n==winner)
-        print(f"✅ MATCH: {winner} (votes={vote[winner]}, cos={bcos:.4f})")
+        print(f" MATCH: {winner} (votes={vote[winner]}, cos={bcos:.4f})")
         return winner, round(bcos, 3)
 
     except Exception as e:
@@ -204,8 +204,8 @@ def health():
 
 @app.route("/")
 def home():
-    return "🚀 Oxymora Face Recognition Server"
+    return " Oxymora Face Recognition Server"
 
 if __name__ == "__main__":
-    print(f"🚀 Starting on port 5001 | DB: {len(known_embeddings)} faces")
+    print(f" Starting on port 5001 | DB: {len(known_embeddings)} faces")
     app.run(host="0.0.0.0", port=5001, debug=False)
