@@ -1,2 +1,3 @@
-2026/04/25-13:12:52.391 d880 Creating DB C:\Users\nikta\OneDrive\Desktop\Oxymo\backend\.wwebjs_auth\session\Default\Sync Data\LevelDB since it was missing.
-2026/04/25-13:12:52.419 d880 Reusing MANIFEST C:\Users\nikta\OneDrive\Desktop\Oxymo\backend\.wwebjs_auth\session\Default\Sync Data\LevelDB/MANIFEST-000001
+2026/05/06-13:14:58.975 10038 Reusing MANIFEST C:\Users\nikta\OneDrive\Desktop\Oxymo\backend\.wwebjs_auth\session\Default\Sync Data\LevelDB/MANIFEST-000001
+2026/05/06-13:14:58.980 10038 Recovering log #3
+2026/05/06-13:14:58.983 10038 Reusing old log C:\Users\nikta\OneDrive\Desktop\Oxymo\backend\.wwebjs_auth\session\Default\Sync Data\LevelDB/000003.log 

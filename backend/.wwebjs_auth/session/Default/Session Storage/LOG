@@ -1,2 +1,3 @@
-2026/04/25-13:12:52.465 102c0 Creating DB C:\Users\nikta\OneDrive\Desktop\Oxymo\backend\.wwebjs_auth\session\Default\Session Storage since it was missing.
-2026/04/25-13:12:52.511 102c0 Reusing MANIFEST C:\Users\nikta\OneDrive\Desktop\Oxymo\backend\.wwebjs_auth\session\Default\Session Storage/MANIFEST-000001
+2026/05/06-13:15:00.602 18d98 Reusing MANIFEST C:\Users\nikta\OneDrive\Desktop\Oxymo\backend\.wwebjs_auth\session\Default\Session Storage/MANIFEST-000001
+2026/05/06-13:15:00.603 18d98 Recovering log #3
+2026/05/06-13:15:00.608 18d98 Reusing old log C:\Users\nikta\OneDrive\Desktop\Oxymo\backend\.wwebjs_auth\session\Default\Session Storage/000003.log 
