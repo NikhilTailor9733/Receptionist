@@ -6,6 +6,7 @@ nixPkgs = [
   "gcc",
   "ffmpeg",
   "glib",
+  "glibc",
   "nss",
   "nspr",
   "atk",
@@ -13,11 +14,18 @@ nixPkgs = [
   "cups",
   "drm",
   "dbus",
-  "xcbutilwm",
   "libxkbcommon",
+  "gtk3",
   "pango",
   "cairo",
-  "gtk3"
+  "expat",
+  "xorg.libX11",
+  "xorg.libXcomposite",
+  "xorg.libXdamage",
+  "xorg.libXext",
+  "xorg.libXfixes",
+  "xorg.libXrandr",
+  "xorg.libxcb"
 ]
 
 [start]
