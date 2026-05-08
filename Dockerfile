@@ -36,6 +36,8 @@ COPY . .
 
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
+ENV TF_CPP_MIN_LOG_LEVEL=3
+ENV TF_ENABLE_ONEDNN_OPTS=0
 
 RUN pip install --upgrade pip
 RUN pip install -r /app/requirements.txt

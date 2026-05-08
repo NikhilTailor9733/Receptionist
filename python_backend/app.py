@@ -11,6 +11,10 @@ from flask_cors import CORS
 import cv2, os, numpy as np
 from pathlib import Path
 from collections import Counter
+import os
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 
 try:
     from deepface import DeepFace
