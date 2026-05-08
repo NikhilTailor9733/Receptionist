@@ -2,6 +2,7 @@ FROM node:22
 
 RUN apt-get update && apt-get install -y \
     python3 \
+    python3-venv \
     python3-pip \
     wget \
     gnupg \
@@ -31,7 +32,11 @@ WORKDIR /app
 
 COPY . .
 
-RUN pip3 install -r /app/requirements.txt
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+RUN pip install --upgrade pip
+RUN pip install -r /app/requirements.txt
 
 WORKDIR /app/backend
 
