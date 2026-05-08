@@ -9,7 +9,17 @@ const qrcode = require("qrcode-terminal");
 let latestResponses = {};
 // We store the SAME response under MULTIPLE keys so any lookup finds it
 
-const client = new Client({ authStrategy: new LocalAuth() });
+const client = new Client({
+  authStrategy: new LocalAuth(),
+
+  puppeteer: {
+    headless: true,
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox"
+    ]
+  }
+});
 
 client.on("qr", (qr) => qrcode.generate(qr, { small: true }));
 client.on("ready", () => console.log("✅ WhatsApp Ready"));
