@@ -3,6 +3,8 @@ FROM node:22
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
+    wget \
+    gnupg \
     libglib2.0-0 \
     libnss3 \
     libatk1.0-0 \
@@ -29,9 +31,13 @@ WORKDIR /app
 
 COPY . .
 
+RUN pip3 install -r /app/requirements.txt
+
 WORKDIR /app/backend
 
 RUN npm install
+
+RUN npx puppeteer browsers install chrome
 
 EXPOSE 8080
 
