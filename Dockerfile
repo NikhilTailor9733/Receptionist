@@ -42,7 +42,7 @@ WORKDIR /app/backend
 
 RUN npm install
 
-RUN npx puppeteer browsers install chrome
+RUN node ./node_modules/puppeteer/install.mjs
 
 EXPOSE 8080
 
