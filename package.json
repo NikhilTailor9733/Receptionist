@@ -1,7 +1,0 @@
-{
-  "name": "oxymo-root",
-  "private": true,
-  "scripts": {
-    "start": "cd backend && npm start"
-  }
-}
