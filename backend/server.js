@@ -18,58 +18,58 @@ app.get("/alert", (req, res) => {
 });
 
 // Python backend test route
-// app.get("/python-test", async (req, res) => {
+app.get("/python-test", async (req, res) => {
 
-//   try {
+  try {
 
-//     const response = await axios.get(
-//       "http://127.0.0.1:5001/health"
-//     );
+    const response = await axios.get(
+      "http://127.0.0.1:5001/health"
+    );
 
-//     res.json(response.data);
+    res.json(response.data);
 
-//   } catch (e) {
+  } catch (e) {
 
-//     console.log("❌ Python backend error:", e.message);
+    console.log("❌ Python backend error:", e.message);
 
-//     res.status(500).json({
-//       success: false,
-//       error: "Python backend failed"
-//     });
+    res.status(500).json({
+      success: false,
+      error: "Python backend failed"
+    });
 
-//   }
+  }
 
-// });
+});
 
 // Python recognize route
-// app.post("/recognize", async (req, res) => {
+app.post("/recognize", async (req, res) => {
 
-//   try {
+  try {
 
-//     const response = await axios.post(
-//       "http://127.0.0.1:5001/recognize",
-//       req.body,
-//       {
-//         headers: {
-//           "Content-Type": "application/json"
-//         }
-//       }
-//     );
+    const response = await axios.post(
+      "http://127.0.0.1:5001/recognize",
+      req.body,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
 
-//     res.json(response.data);
+    res.json(response.data);
 
-//   } catch (e) {
+  } catch (e) {
 
-//     console.log("❌ Python recognize error:", e.message);
+    console.log("❌ Python recognize error:", e.message);
 
-//     res.status(500).json({
-//       success: false,
-//       error: "Recognition failed"
-//     });
+    res.status(500).json({
+      success: false,
+      error: "Recognition failed"
+    });
 
-//   }
+  }
 
-// });
+});
 
 app.use("/api", aiRoute);
 
