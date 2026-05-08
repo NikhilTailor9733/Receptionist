@@ -24,6 +24,3 @@ aptPkgs = [
   "libx11-6",
   "fonts-liberation"
 ]
-
-[start]
-cmd = "npm start"
