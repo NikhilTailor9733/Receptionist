@@ -6,7 +6,11 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     wget \
     gnupg \
+    libgl1-mesa-glx \
     libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
     libnss3 \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
@@ -24,10 +28,8 @@ RUN apt-get update && apt-get install -y \
     libcairo2 \
     libx11-xcb1 \
     libxshmfence1 \
-    libxext6 \
     libx11-6 \
     fonts-liberation
-
 WORKDIR /app
 
 COPY . .
