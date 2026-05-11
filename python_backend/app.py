@@ -69,7 +69,7 @@ def load_database():
             try:
                 result = DeepFace.represent(
                     img_path=os.path.join(ppath, img_name),
-                    model_name="Facenet512",
+                    model_name="SFace",
                     detector_backend="opencv",
                     enforce_detection=False
                 )
