@@ -14,22 +14,34 @@ let latestResponses = {};
 // We store the SAME response under MULTIPLE keys so any lookup finds it
 
 const client = new Client({
-  authStrategy: new LocalAuth(),
 
   puppeteer: {
+
     headless: true,
+
+    protocolTimeout: 120000,
+
     args: [
       "--no-sandbox",
       "--disable-setuid-sandbox",
-    "--disable-dev-shm-usage"
+      "--disable-dev-shm-usage",
+      "--disable-gpu"
     ]
-  }
+
+  },
+
+  authStrategy: new LocalAuth()
+
 });
 
 client.on("qr", async (qr) => {
   console.log("📱 QR Generated");
 
   latestQR = await QRCode.toDataURL(qr);
+});
+
+client.on("disconnected", () => {
+  console.log("❌ WhatsApp disconnected");
 });
 
 // Track: lid → phone number mapping (built when we SEND messages)

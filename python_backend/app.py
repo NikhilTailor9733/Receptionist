@@ -12,6 +12,7 @@ import cv2, os, numpy as np
 from pathlib import Path
 from collections import Counter
 import os
+import tempfile
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"

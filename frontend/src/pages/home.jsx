@@ -24,37 +24,37 @@ function getFemaleVoice() {
 }
 
 export default function Home() {
-  const [isSpeaking, setIsSpeaking]       = useState(false);
-  const [listening, setListening]         = useState(false);
-  const [statusText, setStatusText]       = useState("Scanning for visitor...");
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [listening, setListening] = useState(false);
+  const [statusText, setStatusText] = useState("Scanning for visitor...");
   const [sessionActive, setSessionActive] = useState(false);
-  const [isWaiting, setIsWaiting]         = useState(false);
-  const [personName, setPersonName]       = useState("");
-  const [voiceReady, setVoiceReady]       = useState(false);
+  const [isWaiting, setIsWaiting] = useState(false);
+  const [personName, setPersonName] = useState("");
+  const [voiceReady, setVoiceReady] = useState(false);
 
-  const videoRef            = useRef(null);
-  const recognitionRef      = useRef(null);
-  const isSpeakingRef       = useRef(false);
-  const sessionActiveRef    = useRef(false);
-  const isThinkingRef       = useRef(false);
-  const isWaitingRef        = useRef(false);
-  const speechQueue         = useRef([]);
-  const isTTSBusy           = useRef(false);
-  const femaleVoiceRef      = useRef(null);
-  const currentModeRef      = useRef(null);
-  const currentPersonRef    = useRef(null);
-  const lastFaceTimeRef     = useRef(0);
-  const noFaceCountRef      = useRef(0);
-  const sessionStartingRef  = useRef(false);
+  const videoRef = useRef(null);
+  const recognitionRef = useRef(null);
+  const isSpeakingRef = useRef(false);
+  const sessionActiveRef = useRef(false);
+  const isThinkingRef = useRef(false);
+  const isWaitingRef = useRef(false);
+  const speechQueue = useRef([]);
+  const isTTSBusy = useRef(false);
+  const femaleVoiceRef = useRef(null);
+  const currentModeRef = useRef(null);
+  const currentPersonRef = useRef(null);
+  const lastFaceTimeRef = useRef(0);
+  const noFaceCountRef = useRef(0);
+  const sessionStartingRef = useRef(false);
 
-  useEffect(() => { isSpeakingRef.current   = isSpeaking;    }, [isSpeaking]);
+  useEffect(() => { isSpeakingRef.current = isSpeaking; }, [isSpeaking]);
   useEffect(() => { sessionActiveRef.current = sessionActive; }, [sessionActive]);
 
   // isWaiting sync — stop mic when waiting starts
   useEffect(() => {
     isWaitingRef.current = isWaiting;
     if (isWaiting) {
-      try { recognitionRef.current?.stop(); } catch {}
+      try { recognitionRef.current?.stop(); } catch { }
       setListening(false);
       setStatusText("⏳ Waiting for response...");
     }
@@ -77,43 +77,43 @@ export default function Home() {
     const text = speechQueue.current.shift();
     if (!text) return;
 
-    isTTSBusy.current     = true;
+    isTTSBusy.current = true;
     isSpeakingRef.current = true;
     setIsSpeaking(true);
-    try { recognitionRef.current?.stop(); } catch {}
+    try { recognitionRef.current?.stop(); } catch { }
     // Start wake word listener
     setTimeout(() => {
       if (isSpeakingRef.current && !wakeActiveRef.current) {
         wakeActiveRef.current = true;
-        try { wakeRecRef.current?.start(); } catch {}
+        try { wakeRecRef.current?.start(); } catch { }
       }
     }, 500);
 
-    const utt  = new SpeechSynthesisUtterance(text);
-    utt.lang   = "en-IN";
-    utt.rate   = 0.93;
-    utt.pitch  = 1.1;
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = "en-IN";
+    utt.rate = 0.93;
+    utt.pitch = 1.1;
     if (femaleVoiceRef.current) utt.voice = femaleVoiceRef.current;
 
     utt.onend = () => {
-      isTTSBusy.current     = false;
+      isTTSBusy.current = false;
       isSpeakingRef.current = false;
       setIsSpeaking(false);
       // Stop wake word listener — AI done speaking
       wakeActiveRef.current = false;
-      try { wakeRecRef.current?.abort(); } catch {}
+      try { wakeRecRef.current?.abort(); } catch { }
       if (isWaitingRef.current) {
         setStatusText("⏳ Waiting for response...");
       } else if (sessionActiveRef.current && !isThinkingRef.current) {
         setStatusText("Listening...");
-        setTimeout(() => { try { recognitionRef.current?.start(); } catch {} }, 400);
+        setTimeout(() => { try { recognitionRef.current?.start(); } catch { } }, 400);
       } else {
         setStatusText("Scanning for visitor...");
       }
       setTimeout(processQueue, 150);
     };
     utt.onerror = () => {
-      isTTSBusy.current     = false;
+      isTTSBusy.current = false;
       isSpeakingRef.current = false;
       setIsSpeaking(false);
       setTimeout(processQueue, 150);
@@ -137,10 +137,10 @@ export default function Home() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) { console.warn("❌ No SpeechRecognition"); return; }
 
-    const rec        = new SR();
-    rec.continuous      = false;
-    rec.lang            = "en-IN";
-    rec.interimResults  = false;
+    const rec = new SR();
+    rec.continuous = false;
+    rec.lang = "en-IN";
+    rec.interimResults = false;
     rec.maxAlternatives = 1;
 
     rec.onstart = () => { setListening(true); setStatusText("Listening..."); };
@@ -149,16 +149,16 @@ export default function Home() {
       setListening(false);
       if (isWaitingRef.current) return;
       if (sessionActiveRef.current && !isSpeakingRef.current && !isThinkingRef.current) {
-        setTimeout(() => { try { rec.start(); } catch {} }, 400);
+        setTimeout(() => { try { rec.start(); } catch { } }, 400);
       }
     };
 
     rec.onerror = (e) => {
       setListening(false);
-      if (["no-speech","aborted"].includes(e.error)) {
+      if (["no-speech", "aborted"].includes(e.error)) {
         if (isWaitingRef.current) return;
         if (sessionActiveRef.current && !isSpeakingRef.current && !isThinkingRef.current) {
-          setTimeout(() => { try { rec.start(); } catch {} }, 600);
+          setTimeout(() => { try { rec.start(); } catch { } }, 600);
         }
       }
     };
@@ -171,38 +171,38 @@ export default function Home() {
     };
 
     recognitionRef.current = rec;
-    return () => { try { rec.abort(); } catch {} };
+    return () => { try { rec.abort(); } catch { } };
   }, []); // eslint-disable-line
 
   // ── Wake Word Recognizer ──
   // Runs in short bursts ONLY while AI is speaking
   // Detects "Oxymora" → stops AI → hands to main mic
-  const wakeRecRef     = useRef(null);
-  const wakeActiveRef  = useRef(false);
+  const wakeRecRef = useRef(null);
+  const wakeActiveRef = useRef(false);
 
   const stopAIForWake = useCallback(() => {
     console.log("🎯 Wake word! AI stopping.");
     window.speechSynthesis.cancel();
-    speechQueue.current   = [];
-    isTTSBusy.current     = false;
+    speechQueue.current = [];
+    isTTSBusy.current = false;
     isSpeakingRef.current = false;
     setIsSpeaking(false);
     wakeActiveRef.current = false;
-    try { wakeRecRef.current?.abort(); } catch {}
+    try { wakeRecRef.current?.abort(); } catch { }
     setStatusText("Listening...");
-    setTimeout(() => { try { recognitionRef.current?.start(); } catch {} }, 300);
+    setTimeout(() => { try { recognitionRef.current?.start(); } catch { } }, 300);
   }, []); // eslint-disable-line
 
   useEffect(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) return;
-    const WAKE = ["oxymora","oxymoron","aksimora","oxy mora","oxymara","oksmora","oximora"];
+    const WAKE = ["oxymora", "oxymoron", "aksimora", "oxy mora", "oxymara", "oksmora", "oximora"];
 
     const rec = new SR();
-    rec.continuous     = false;
-    rec.lang           = "en-IN";
+    rec.continuous = false;
+    rec.lang = "en-IN";
     rec.interimResults = false;
-    rec.maxAlternatives= 3;  // more alternatives = better chance of catching wake word
+    rec.maxAlternatives = 3;  // more alternatives = better chance of catching wake word
 
     rec.onresult = (e) => {
       // Check all alternatives for wake word
@@ -221,7 +221,7 @@ export default function Home() {
       if (isSpeakingRef.current && sessionActiveRef.current && wakeActiveRef.current) {
         setTimeout(() => {
           if (isSpeakingRef.current && wakeActiveRef.current) {
-            try { rec.start(); } catch {}
+            try { rec.start(); } catch { }
           }
         }, 100);
       } else {
@@ -234,14 +234,14 @@ export default function Home() {
       if (isSpeakingRef.current && sessionActiveRef.current && wakeActiveRef.current) {
         setTimeout(() => {
           if (isSpeakingRef.current && wakeActiveRef.current) {
-            try { rec.start(); } catch {}
+            try { rec.start(); } catch { }
           }
         }, 200);
       }
     };
 
     wakeRecRef.current = rec;
-    return () => { try { rec.abort(); } catch {} };
+    return () => { try { rec.abort(); } catch { } };
   }, [stopAIForWake]);
 
   // ── Camera ──
@@ -258,9 +258,9 @@ export default function Home() {
   const sendToAI = useCallback(async (message) => {
     try {
       const res = await fetch("https://receptionist-production-3513.up.railway.app/api/chat", {
-        method:  "POST",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ message })
+        body: JSON.stringify({ message })
       });
       return await res.json();
     } catch { return { reply: null }; }
@@ -271,7 +271,7 @@ export default function Home() {
     if (isWaitingRef.current) return;
     isThinkingRef.current = true;
     setStatusText("Thinking...");
-    try { recognitionRef.current?.stop(); } catch {}
+    try { recognitionRef.current?.stop(); } catch { }
 
     const data = await sendToAI(text);
     isThinkingRef.current = false;
@@ -297,20 +297,20 @@ export default function Home() {
   // ── Clear session ──
   const clearSessionState = useCallback(() => {
     setSessionActive(false);
-    sessionActiveRef.current   = false;
+    sessionActiveRef.current = false;
     sessionStartingRef.current = false;
-    isThinkingRef.current      = false;
-    isTTSBusy.current          = false;
-    isSpeakingRef.current      = false;
-    noFaceCountRef.current     = 0;
+    isThinkingRef.current = false;
+    isTTSBusy.current = false;
+    isSpeakingRef.current = false;
+    noFaceCountRef.current = 0;
     setIsSpeaking(false);
     setListening(false);
     setPersonName("");
     isWaitingRef.current = false;
     setIsWaiting(false);
-    speechQueue.current  = [];
+    speechQueue.current = [];
     window.speechSynthesis.cancel();
-    try { recognitionRef.current?.stop(); } catch {}
+    try { recognitionRef.current?.stop(); } catch { }
     setStatusText("Scanning for visitor...");
   }, []);
 
@@ -319,11 +319,11 @@ export default function Home() {
     if (sessionActiveRef.current || sessionStartingRef.current) return;
     sessionStartingRef.current = true;
     console.log("🟢 Guest session starting");
-    currentModeRef.current   = "guest";
+    currentModeRef.current = "guest";
     currentPersonRef.current = null;
     setSessionActive(true);
     sessionActiveRef.current = true;
-    isWaitingRef.current     = false;
+    isWaitingRef.current = false;
     setIsWaiting(false);
     const data = await sendToAI("start");
     sessionStartingRef.current = false;
@@ -335,12 +335,12 @@ export default function Home() {
     if (sessionStartingRef.current) return;
     sessionStartingRef.current = true;
     console.log("👔 Employee session:", empName);
-    currentModeRef.current   = "employee";
+    currentModeRef.current = "employee";
     currentPersonRef.current = empName;
     setPersonName(empName);
     setSessionActive(true);
     sessionActiveRef.current = true;
-    isWaitingRef.current     = false;
+    isWaitingRef.current = false;
     setIsWaiting(false);
     setStatusText(`Welcome, ${empName}`);
     await sendToAI(`employee_login:${empName}`);
@@ -353,7 +353,7 @@ export default function Home() {
     if (!sessionActiveRef.current) return;
     console.log("🔴 Session ending:", reason);
     const wasMode = currentModeRef.current;
-    currentModeRef.current   = null;
+    currentModeRef.current = null;
     currentPersonRef.current = null;
     clearSessionState();
     if (wasMode === "guest") await sendToAI("visitor_left");
@@ -378,34 +378,43 @@ export default function Home() {
           speak(data.reply);
           // mic will restart in utt.onend because isWaitingRef is now false
         }
-      } catch {}
+      } catch { }
     }, 2000);  // 2s instead of 3s for faster response
     return () => clearInterval(id);
   }, [sendToAI, speak]);
 
   // ── Face scan ──
   const scanFace = useCallback(async () => {
-    if (!videoRef.current)          return;
-    if (isSpeakingRef.current)      return;
-    if (isThinkingRef.current)      return;
+    if (!videoRef.current) return;
+    if (isSpeakingRef.current) return;
+    if (isThinkingRef.current) return;
     if (sessionStartingRef.current) return;
 
     try {
-      const canvas  = document.createElement("canvas");
-      canvas.width  = 640; canvas.height = 480;
+      const canvas = document.createElement("canvas");
+      canvas.width = 640; canvas.height = 480;
       canvas.getContext("2d").drawImage(videoRef.current, 0, 0, 640, 480);
       const blob = await new Promise(r => canvas.toBlob(r, "image/jpeg", 0.9));
       const form = new FormData();
       form.append("image", blob);
 
-      const res  = await fetch("https://receptionist-production-3513.up.railway.app/recognize", { method: "POST", body: form });
+      const res = await fetch(
+        "https://receptionist-production-3513.up.railway.app/recognize",
+        {
+          method: "POST",
+          body: form,
+          headers: {
+            Accept: "application/json"
+          }
+        }
+      );
       const data = await res.json();
-      const now  = Date.now();
+      const now = Date.now();
       console.log("📸 Scan:", data.status, data.name || "");
 
       if (data.status === "employee") {
         lastFaceTimeRef.current = now;
-        noFaceCountRef.current  = 0;
+        noFaceCountRef.current = 0;
         if (currentPersonRef.current === data.name) return;
         if (sessionActiveRef.current) await endSession("new person");
         await startEmployeeSession(data.name);
@@ -413,7 +422,7 @@ export default function Home() {
       }
       if (data.status === "unknown") {
         lastFaceTimeRef.current = now;
-        noFaceCountRef.current  = 0;
+        noFaceCountRef.current = 0;
         if (currentModeRef.current === "employee") {
           await endSession("employee left");
           await startGuestSession();
@@ -443,7 +452,7 @@ export default function Home() {
       await endSession("manual");
     } else {
       await startGuestSession();
-      setTimeout(() => { try { recognitionRef.current?.start(); } catch {} }, 600);
+      setTimeout(() => { try { recognitionRef.current?.start(); } catch { } }, 600);
     }
   };
 
@@ -456,9 +465,8 @@ export default function Home() {
       />
 
       <div className="absolute top-4 right-4 z-10 flex items-center gap-2 bg-black/60 backdrop-blur-sm text-white text-sm px-4 py-2 rounded-full">
-        <span className={`w-2 h-2 rounded-full animate-pulse ${
-          isWaiting ? "bg-orange-400" : sessionActive ? "bg-green-400" : "bg-yellow-400"
-        }`} />
+        <span className={`w-2 h-2 rounded-full animate-pulse ${isWaiting ? "bg-orange-400" : sessionActive ? "bg-green-400" : "bg-yellow-400"
+          }`} />
         {statusText}{personName ? ` — ${personName}` : ""}
       </div>
 
