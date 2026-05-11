@@ -257,7 +257,7 @@ export default function Home() {
   // ── API ──
   const sendToAI = useCallback(async (message) => {
     try {
-      const res = await fetch("http://localhost:5000/api/chat", {
+      const res = await fetch("https://receptionist-production-3513.up.railway.app/api/chat", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body:    JSON.stringify({ message })
@@ -398,7 +398,7 @@ export default function Home() {
       const form = new FormData();
       form.append("image", blob);
 
-      const res  = await fetch("http://localhost:5001/recognize", { method: "POST", body: form });
+      const res  = await fetch("https://receptionist-production-3513.up.railway.app/recognize", { method: "POST", body: form });
       const data = await res.json();
       const now  = Date.now();
       console.log("📸 Scan:", data.status, data.name || "");

@@ -29,24 +29,29 @@ RUN apt-get update && apt-get install -y \
     libx11-xcb1 \
     libxshmfence1 \
     libx11-6 \
-    fonts-liberation
+    fonts-liberation \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY . .
 
 RUN python3 -m venv /opt/venv
+
 ENV PATH="/opt/venv/bin:$PATH"
 ENV TF_CPP_MIN_LOG_LEVEL=3
 ENV TF_ENABLE_ONEDNN_OPTS=0
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false
 
 RUN pip install --upgrade pip
-RUN pip install -r /app/requirements.txt
+
+RUN pip install -r requirements.txt
 
 WORKDIR /app/backend
 
 RUN npm install
 
-RUN node ./node_modules/puppeteer/install.mjs
+RUN node node_modules/puppeteer/install.mjs
 
 EXPOSE 8080
 
