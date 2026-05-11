@@ -8,9 +8,14 @@ const whatsapp = require("./whatsapp");
 const aiRoute = require("./routes/aiRoutes");
 
 const app = express();
+const upload = multer();
+
+const multer = require("multer");
+const FormData = require("form-data");
 
 app.use(cors());
 app.use(express.json());
+
 
 // Alert route
 app.get("/alert", (req, res) => {
@@ -43,34 +48,59 @@ app.get("/python-test", async (req, res) => {
 });
 
 // Python recognize route
-app.post("/recognize", async (req, res) => {
+app.post(
+  "/recognize",
+  upload.single("image"),
+  async (req, res) => {
 
-  try {
+    try {
 
-    const response = await axios.post(
-      "http://127.0.0.1:5001/recognize",
-      req.body,
-      {
-        headers: {
-          "Content-Type": "application/json"
-        }
+      if (!req.file) {
+
+        return res.status(400).json({
+          success: false,
+          error: "No image received"
+        });
+
       }
-    );
 
-    res.json(response.data);
+      const form = new FormData();
 
-  } catch (e) {
+      form.append(
+        "image",
+        req.file.buffer,
+        {
+          filename: "scan.jpg",
+          contentType: "image/jpeg"
+        }
+      );
 
-    console.log("❌ Python recognize error:", e.message);
+      const response = await axios.post(
+        "http://127.0.0.1:5001/recognize",
+        form,
+        {
+          headers: form.getHeaders()
+        }
+      );
 
-    res.status(500).json({
-      success: false,
-      error: "Recognition failed"
-    });
+      res.json(response.data);
+
+    } catch (e) {
+
+      console.log(
+        "❌ Python recognize error:",
+        e.response?.data || e.message
+      );
+
+      res.status(500).json({
+        success: false,
+        error: e.message
+      });
+
+    }
 
   }
-
-});
+);
 
 app.use("/api", aiRoute);
 
