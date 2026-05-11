@@ -207,8 +207,8 @@ async function getAIResponse(input) {
     Object.assign(session, { mode: "guest", active: true, lastActivityTime: Date.now() });
     return {
       reply: hindi
-        ? "Namaste! Oxymora Technology mein aapka swagat hai. Main Priya hoon. Aapka naam kya hai?"
-        : "Hello! Welcome to Oxymora Technology. I'm Priya — may I know your name?"
+        ? "Namaste! Oxymora Technology mein aapka swagat hai. Main Oxymo hoon. Aapka naam kya hai?"
+        : "Hello! Welcome to Oxymora Technology. I'm Oxymo — may I know your name?"
     };
   }
 
