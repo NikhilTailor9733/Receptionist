@@ -3,7 +3,6 @@
 // Solution: store responses by ALL possible keys (lid + c.us variants)
 // so lookup by phone number always finds it
 
-let latestQR = null;
 
 const { Client, LocalAuth } = require("whatsapp-web.js");
 const QRCode = require("qrcode");
