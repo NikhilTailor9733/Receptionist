@@ -4,14 +4,13 @@ const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
 const whatsapp = require("./whatsapp");
+const multer = require("multer");
+const FormData = require("form-data");
 
 const aiRoute = require("./routes/aiRoutes");
 
 const app = express();
 const upload = multer();
-
-const multer = require("multer");
-const FormData = require("form-data");
 
 app.use(cors());
 app.use(express.json());
