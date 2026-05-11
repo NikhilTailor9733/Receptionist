@@ -141,7 +141,7 @@ def recognize(img_path):
     try:
         result = DeepFace.represent(
             img_path=face_path,
-            model_name="Facenet512",
+            model_name="SFace",
             detector_backend="opencv",
             enforce_detection=False
         )
