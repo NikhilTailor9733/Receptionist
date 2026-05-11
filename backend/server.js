@@ -3,13 +3,14 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
-const whatsapp = require("./whatsapp");
 const multer = require("multer");
 const FormData = require("form-data");
 
+const whatsapp = require("./whatsapp");
 const aiRoute = require("./routes/aiRoutes");
 
 const app = express();
+
 const upload = multer();
 
 app.use(cors());
