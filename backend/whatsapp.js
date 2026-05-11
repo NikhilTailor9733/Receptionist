@@ -3,8 +3,13 @@
 // Solution: store responses by ALL possible keys (lid + c.us variants)
 // so lookup by phone number always finds it
 
+let latestQR = null;
+
 const { Client, LocalAuth } = require("whatsapp-web.js");
-const qrcode = require("qrcode-terminal");
+const QRCode = require("qrcode");
+const express = require("express");
+
+let latestQR = null;
 
 let latestResponses = {};
 // We store the SAME response under MULTIPLE keys so any lookup finds it
@@ -21,8 +26,11 @@ const client = new Client({
   }
 });
 
-client.on("qr", (qr) => qrcode.generate(qr, { small: true }));
-client.on("ready", () => console.log("✅ WhatsApp Ready"));
+client.on("qr", async (qr) => {
+  console.log("📱 QR Generated");
+
+  latestQR = await QRCode.toDataURL(qr);
+});
 
 // Track: lid → phone number mapping (built when we SEND messages)
 // sendMessage knows the phone number, so we record: "when reply comes from X, store it for phone Y"
@@ -59,6 +67,7 @@ client.on("message", async (msg) => {
     console.log("📦 Keys:", Object.keys(latestResponses));
   }
 });
+
 
 client.initialize();
 
@@ -112,4 +121,4 @@ function getAllResponses() {
   return latestResponses;
 }
 
-module.exports = { sendMessage, getLatestHRResponse, clearHRResponse, clearAllResponses, getAllResponses };
+module.exports = { sendMessage, getLatestHRResponse, clearHRResponse, clearAllResponses, getAllResponses, getLatestQR: () => latestQR };

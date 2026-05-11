@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
+const whatsapp = require("./whatsapp");
 
 const aiRoute = require("./routes/aiRoutes");
 
@@ -74,7 +75,43 @@ app.post("/recognize", async (req, res) => {
 app.use("/api", aiRoute);
 
 app.get("/", (req, res) => {
-  res.send("🤖 AI Receptionist — Oxymo is online");
+
+  const qr = whatsapp.getLatestQR();
+
+  if (!qr) {
+
+    return res.send(`
+      <h2 style="font-family:sans-serif">
+        ⏳ Waiting for WhatsApp QR...
+      </h2>
+    `);
+
+  }
+
+  res.send(`
+    <html>
+
+      <body style="
+        background:#111;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+        flex-direction:column;
+        font-family:sans-serif;
+      ">
+
+        <h2 style="color:white">
+          Scan WhatsApp QR
+        </h2>
+
+        <img src="${qr}" />
+
+      </body>
+
+    </html>
+  `);
+
 });
 
 const PORT = process.env.PORT || 5000;
