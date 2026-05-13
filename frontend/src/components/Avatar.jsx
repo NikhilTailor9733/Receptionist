@@ -49,7 +49,7 @@ export default function Avatar({ isSpeaking }) {
   }, []);
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-950">
+    <div className="flex items-center justify-center h-screen ">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
